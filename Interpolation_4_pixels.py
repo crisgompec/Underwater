@@ -146,7 +146,7 @@ for i in range(np.shape(im_skin)[0] - 1):
             if num_pixels_for_average > 0: 
                 avg_pixel_value = aux_pixel_value/num_pixels_for_average
             elif num_pixels_for_average == 0:
-                avg_pixel_value = (255,0,0)#avg_skin_color #FOR BRIGHTER AREAS
+                avg_pixel_value = avg_skin_color #FOR BRIGHTER AREAS
 
                 mask[i][j] = 255
                 mask[i+1][j] = 255
