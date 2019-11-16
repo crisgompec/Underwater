@@ -9,6 +9,7 @@ import pandas as pd
 
 
 #PICKING AN IMAGE
+im_original = cv2.imread("images/UW_400.png")
 im_original = cv2.imread("images/underwater-15_downsampled.png")
 #im_original = cv2.imread("images/underwater-15.png")
 
@@ -85,7 +86,10 @@ df_brigth_color = df[(df['Intensity'] > 70) & (df['Intensity'] < 87)]
 sum_rgb = df_brigth_color.sum(axis=0)
 average_rgb = sum_rgb/len(df_brigth_color)
 
-c = 1.25 #For making the color brighter
+c = 1.15 #For making the color brighter
+
+
+
 
 avg_skin_color = (average_rgb[0]*c, average_rgb[1]*c, average_rgb[2]*c)
 
@@ -98,6 +102,8 @@ print(avg_skin_color)
 im_skin_interp = np.copy(im_skin)
 
 #Step 1: Go over all the pixels of "Zones similar to skin color" using a square of 4 pixels
+
+mask = np.zeros((np.shape(im_skin)[0], np.shape(im_skin)[1]))
 
 for i in range(np.shape(im_skin)[0] - 1):
     for j in range(np.shape(im_skin)[1] -1):
@@ -140,7 +146,12 @@ for i in range(np.shape(im_skin)[0] - 1):
             if num_pixels_for_average > 0: 
                 avg_pixel_value = aux_pixel_value/num_pixels_for_average
             elif num_pixels_for_average == 0:
-                avg_pixel_value = avg_skin_color #FOR BRIGHTER AREAS
+                avg_pixel_value = (255,0,0)#avg_skin_color #FOR BRIGHTER AREAS
+
+                mask[i][j] = 255
+                mask[i+1][j] = 255
+                mask[i][j+1] = 255
+                mask[i+1][j+1] = 255
                 
             
             for p in range(np.shape(pixel_array)[0]):
@@ -148,10 +159,15 @@ for i in range(np.shape(im_skin)[0] - 1):
                     pixel_array[p] =  avg_pixel_value
                     
             
-            im_skin_interp[i,j] = pixel_array[0]
-            im_skin_interp[i,j+1] = pixel_array[1]
-            im_skin_interp[i+1 ,j] = pixel_array[2]
-            im_skin_interp[i+1,j+1] = pixel_array[3]
+
+            if (im_skin[i,j] == [0,0,0]).all():
+                im_skin_interp[i,j] = pixel_array[0]
+            if (im_skin[i,j+1] == [0,0,0]).all():
+                im_skin_interp[i,j+1] = pixel_array[1]
+            if (im_skin[i+1,j] == [0,0,0]).all():
+                im_skin_interp[i+1 ,j] = pixel_array[2]
+            if (im_skin[i+1,j+1] == [0,0,0]).all():
+                im_skin_interp[i+1,j+1] = pixel_array[3]
             
 #Display only skin-coloured pixels on original image and interpolated skin 
 
@@ -169,12 +185,18 @@ dip.show()
 
 im_res = np.copy(im_original)
 
+
+cv2.imwrite('temp_images/mask.png',mask)
+
 """
 %matplotlib inline
 dip.imshow(im_original)
 dip.show()
 
 """
+# Until here im_skin_interp[i,j] is the interpolated image with black background.
+
+
 
 for i in range(np.shape(im_res)[0]):
     for j in range(np.shape(im_res)[1]):

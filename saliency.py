@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 import dippykit as dip
 import matplotlib.pyplot as plt
-
+import argparse
 
 #PICKING AN IMAGE
 im_original = cv2.imread("images/underwater-15.png")
