@@ -42,7 +42,7 @@ def reduce_mask(mask):
 
 if __name__ == "__main__":
 	image = cv2.imread('temp_images/result.png') #'images/UW_400.png'
-	mask = cv2.imread('temp_images/mask.png')
+	mask = cv2.imread('temp_images/binary_morf.png')
 	mask = cv2.cvtColor(mask, cv2.COLOR_BGR2GRAY)
 	#reduce_mask(mask)
 	output = inpaint(image, mask)
