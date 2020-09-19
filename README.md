@@ -1,2 +1,4 @@
-# Underwater
-This is the Git repository for the project of the Digital Image Processing class in Georgia Tech. The aim is to achieve the proper elemination of the 'zebra stripes' that appear under water in some pictures. The contributors of the project are Miguel Jimenez and Cristian Gomez.
+# Elimination of skin stripes in underwater pictures
+This is the final project for the Digital Image Processing class at Georgia Tech. 
+
+The objective is to eliminate white stripes that are formed by applying different techniques learnt in the course. Further information can be found on the PowerPoint file named Underwater. 
